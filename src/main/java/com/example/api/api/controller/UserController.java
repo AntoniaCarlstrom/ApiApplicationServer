@@ -12,59 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 @RestController
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
+//GetMapping för olika url beroende på vad användaren väljer i menyn
 
-//    @GetMapping("/user")
-//    public User getUser(@RequestParam Integer id) {
-//
-//        Optional user = breedService.getUser(id);
-//        if(user.isPresent()) {
-//            return (User) user.get();
-//
-//        } return null;
-//    }
-
-//    @GetMapping("/user")
-//    public ResponseEntity<User> getUser() {
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.print("Enter user id: ");
-//        Integer id = scanner.nextInt();
-//        Optional<User> user = breedService.getUser(id);
-//        if(user.isPresent()) {
-//            return ResponseEntity.ok().body(user.get());
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
-//@GetMapping("/user")
-//public ResponseEntity<String> getUser() throws JsonProcessingException {
-//    Scanner scanner = new Scanner(System.in);
-//    System.out.print("Enter user ID: ");
-//    Integer id = scanner.nextInt();
-//    Optional<User> user = userService.getUser();
-//    if(user.isPresent()) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        String jsonUser = mapper.writeValueAsString(user.get());
-//        System.out.println(jsonUser);
-//        return ResponseEntity.ok().body(jsonUser);
-//    }
-//    return ResponseEntity.notFound().build();
-//}
-
+    //Hämtar alla users i listan
     @GetMapping("/users")
     public ResponseEntity<String> getAllUsers() throws JsonProcessingException {
         List<User> userList = userService.getAllUsers();
-        if(userList.size() > 0) {
+        if (userList.size() > 0) {
             ObjectMapper mapper = new ObjectMapper();
             String jsonUsers = mapper.writeValueAsString(userList);
             System.out.println(jsonUsers);
@@ -72,15 +37,17 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
-@GetMapping("/user")
-public ResponseEntity<String> getUser(@RequestParam Integer id) throws JsonProcessingException {
-    Optional<User> user = userService.getUser(id);
-    if(user.isPresent()) {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonUser = mapper.writeValueAsString(user.get());
-        System.out.println(jsonUser);
-        return ResponseEntity.ok().body(jsonUser);
+
+    //Hämtar specifik user efter id som användaren valt.
+    @GetMapping("/user")
+    public ResponseEntity<String> getUser(@RequestParam Integer id) throws JsonProcessingException {
+        Optional<User> user = userService.getUser(id);
+        if (user.isPresent()) {
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonUser = mapper.writeValueAsString(user.get());
+            System.out.println(jsonUser);
+            return ResponseEntity.ok().body(jsonUser);
+        }
+        return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.notFound().build();
-}
 }
