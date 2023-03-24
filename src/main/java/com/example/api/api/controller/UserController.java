@@ -32,7 +32,6 @@ public class UserController {
         if (userList.size() > 0) {
             ObjectMapper mapper = new ObjectMapper();
             String jsonUsers = mapper.writeValueAsString(userList);
-            System.out.println(jsonUsers);
             return ResponseEntity.ok().body(jsonUsers);
         }
         return ResponseEntity.notFound().build();
@@ -45,7 +44,7 @@ public class UserController {
         if (user.isPresent()) {
             ObjectMapper mapper = new ObjectMapper();
             String jsonUser = mapper.writeValueAsString(user.get());
-            System.out.println(jsonUser);
+
             return ResponseEntity.ok().body(jsonUser);
         }
         return ResponseEntity.notFound().build();
